@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "maze-project"
+version = "1.0.0"
+authors = [
+  {name="vchiling"},
+  {name="vrafyan"}
+  ]
+description = "Maze generation and solving project"
+requires-python = ">=3.12"
+
+dependencies = [
+    "pydantic>=2.0",
+]
+
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "mypy",
+    "ruff",
+]
