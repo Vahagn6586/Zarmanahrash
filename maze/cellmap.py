@@ -16,16 +16,16 @@ class CellMap:
         return (cell.x_coord in (0, self.width - 1)
                 or cell.y_coord in (0, self.height - 1))
 
-    def get_neighbors(self, cell: Cell, width: int, height: int) -> list[Cell]:
+    def get_neighbors(self, cell: Cell) -> list[Cell]:
         neighbors = []
 
         if cell.y_coord > 0:
             neighbors.append(self.grid[cell.y_coord - 1][cell.x_coord])
 
-        if cell.x_coord < width - 1:
+        if cell.x_coord < self.width - 1:
             neighbors.append(self.grid[cell.y_coord][cell.x_coord + 1])
 
-        if cell.y_coord < height - 1:
+        if cell.y_coord < self.height - 1:
             neighbors.append(self.grid[cell.y_coord + 1][cell.x_coord])
 
         if cell.x_coord > 0:

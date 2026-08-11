@@ -4,6 +4,26 @@ import random
 
 class MazeGenerator:
     cellmap: CellMap
+    pattern_set: set[tuple[int, int]] = {
+            (-3, 2),
+            (-3, 1),
+            (-3, 0),
+            (-2, 0),
+            (-1, 0),
+            (-1, -1),
+            (-1, -2),
+            (1, 2),
+            (2, 2),
+            (3, 2),
+            (3, 1),
+            (3, 0),
+            (2, 0),
+            (1, 0),
+            (1, -1),
+            (1, -2),
+            (2, -2),
+            (3, -2)
+        }
 
     def __init__(self, cellmap: CellMap, seed: int) -> None:
         self.cellmap = cellmap
@@ -11,29 +31,55 @@ class MazeGenerator:
 
     def generate(self) -> None:
         start = self.cellmap.grid[0][0]
-        self._visit(start)
+        self.prim_gen(start)
 
-    def _visit(self, cell: Cell):
+    def pattern_gen(self) -> set[tuple[int, int]]:
+        offset_x = self.cellmap.width // 2
+        offset_y = self.cellmap.height // 2
+        return {
+            (x + offset_x, y + offset_y)
+            for x, y in self.pattern_set
+        }
+
+    def is_blocked(self, cell: Cell) -> bool:
+        return (cell.x_coord, cell.y_coord) in self.pattern_set
+
+    def prim_gen(self, cell: Cell):
         cell.visited = True
 
-        while True:
-            neighbors = self.unvisited_neighbors(cell)
-            if not neighbors:
-                break
-            neighbor = self.random.choice(neighbors)
-            self.maze.remove_wall(cell, neighbor)
-            self._visit(neighbor)
-
-    def unvisited_neighbors(self, cell):
-        return [
+        frontier = [
             neighbor
-            for neighbor in self.maze.neighbors(cell)
-            if not neighbor.visited
+            for neighbor in self.cellmap.get_neighbors(cell)
+            if not self.is_blocked(neighbor)
         ]
 
-    def validate_dfs(self) -> bool:
-        for row in self.maze.grid:
+        while frontier:
+            cell = self.random.choice(frontier)
+            frontier.remove(cell)
+
+            visited_neighbors = [
+                neighbor
+                for neighbor in self.cellmap.get_neighbors(cell)
+                if neighbor.visited and not self.is_blocked(neighbor)
+            ]
+
+            neighbor = self.random.choice(visited_neighbors)
+
+            self.cellmap.remove_wall(cell, neighbor)
+
+            cell.visited = True
+
+            for neighbor in self.cellmap.get_neighbors(cell):
+                if (
+                    not neighbor.visited
+                    and not self.is_blocked(neighbor)
+                    and neighbor not in frontier
+                ):
+                    frontier.append(neighbor)
+
+    def validate_prim(self) -> bool:
+        for row in self.cellmap.grid:
             for cell in row:
-                if not (cell.visited):
+                if not (cell.visited) and not self.is_blocked(cell):
                     return False
         return True
