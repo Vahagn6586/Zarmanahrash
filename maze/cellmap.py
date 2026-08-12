@@ -1,5 +1,4 @@
-# import maze_config
-from cell import Cell
+from .cell import Cell
 
 
 class CellMap:
@@ -33,25 +32,42 @@ class CellMap:
 
         return neighbors
 
+    def get_passages(self, cell: Cell) -> list[Cell]:
+        passages = []
+
+        if cell.y_coord > 0 and not cell.north_wall:
+            passages.append(self.grid[cell.y_coord - 1][cell.x_coord])
+
+        if cell.x_coord < self.width - 1 and not cell.east_wall:
+            passages.append(self.grid[cell.y_coord][cell.x_coord + 1])
+
+        if cell.y_coord < self.height - 1 and not cell.west_wall:
+            passages.append(self.grid[cell.y_coord + 1][cell.x_coord])
+
+        if cell.x_coord > 0 and not cell.south_wall:
+            passages.append(self.grid[cell.y_coord][cell.x_coord - 1])
+
+        return passages
+
     def remove_wall(self, first: Cell, second: Cell) -> None:
-        dx = second.x - first.x
-        dy = second.y - first.y
+        dx = second.x_coord - first.x_coord
+        dy = second.y_coord - first.y_coord
 
         if dx == 1:
-            first.east = False
-            second.west = False
+            first.east_wall = False
+            second.west_wall = False
 
         elif dx == -1:
-            first.west = False
-            second.east = False
+            first.west_wall = False
+            second.east_wall = False
 
         elif dy == 1:
-            first.south = False
-            second.north = False
+            first.south_wall = False
+            second.north_wall = False
 
         elif dy == -1:
-            first.north = False
-            second.south = False
+            first.north_wall = False
+            second.south_wall = False
 
         else:
             raise ValueError("Cells are not adjacent.")
@@ -61,20 +77,20 @@ class CellMap:
         dy = second.y - first.y
 
         if dx == 1:
-            first.east = True
-            second.west = True
+            first.east_wall = True
+            second.west_wall = True
 
         elif dx == -1:
-            first.west = True
-            second.east = True
+            first.west_wall = True
+            second.east_wall = True
 
         elif dy == 1:
-            first.south = True
-            second.north = True
+            first.south_wall = True
+            second.north_wall = True
 
         elif dy == -1:
-            first.north = True
-            second.south = True
+            first.north_wall = True
+            second.south_wall = True
 
         else:
             raise ValueError("Cells are not adjacent.")

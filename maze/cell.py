@@ -3,10 +3,10 @@ from enum import IntEnum
 
 
 class Walls(IntEnum):
-    NORTH: 1
-    EAST: 2
-    SOUTH: 4
-    WEST: 8
+    NORTH = 1
+    EAST = 2
+    SOUTH = 4
+    WEST = 8
 
 
 @dataclass

@@ -1,4 +1,4 @@
-from cellmap import CellMap, Cell
+from .cellmap import CellMap, Cell
 import random
 
 
@@ -28,6 +28,7 @@ class MazeGenerator:
     def __init__(self, cellmap: CellMap, seed: int) -> None:
         self.cellmap = cellmap
         self.random = random.Random(seed)
+        self.blocked = self.pattern_gen()
 
     def generate(self) -> None:
         start = self.cellmap.grid[0][0]
@@ -37,14 +38,14 @@ class MazeGenerator:
         offset_x = self.cellmap.width // 2
         offset_y = self.cellmap.height // 2
         return {
-            (x + offset_x, y + offset_y)
+            (x + offset_x, -y + offset_y)
             for x, y in self.pattern_set
         }
 
     def is_blocked(self, cell: Cell) -> bool:
-        return (cell.x_coord, cell.y_coord) in self.pattern_set
+        return (cell.x_coord, cell.y_coord) in self.blocked
 
-    def prim_gen(self, cell: Cell):
+    def prim_gen(self, cell: Cell) -> None:
         cell.visited = True
 
         frontier = [

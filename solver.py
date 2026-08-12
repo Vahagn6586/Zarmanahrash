@@ -1,17 +1,18 @@
 from maze import Cell, CellMap
 
+
 class MazeSolver:
     def __init__(self, cellmap: CellMap) -> None:
         self.cellmap = cellmap
 
     def solve(self, start: Cell, end: Cell) -> list[Cell]:
         frontier = [start]
-        visited = {(start.x, start.y)}
+        visited = {(start.x_coord, start.y_coord)}
         parent: dict[
             tuple[int, int],
             tuple[int, int] | None
         ] = {
-            (start.x, start.y): None
+            (start.x_coord, start.y_coord): None
         }
 
         index = 0
@@ -24,13 +25,13 @@ class MazeSolver:
                 return self._reconstruct_path(parent, end)
 
             for neighbor in self.cellmap.get_passages(cell):
-                position = (neighbor.x, neighbor.y)
+                position = (neighbor.x_coord, neighbor.y_coord)
 
                 if position in visited:
                     continue
 
                 visited.add(position)
-                parent[position] = (cell.x, cell.y)
+                parent[position] = (cell.x_coord, cell.y_coord)
                 frontier.append(neighbor)
 
         return []
@@ -44,8 +45,8 @@ class MazeSolver:
         end: Cell,
     ) -> list[Cell]:
 
-        path = []
-        current = (end.x, end.y)
+        path: list[Cell] = []
+        current = (end.x_coord, end.y_coord)
 
         while current is not None:
             x, y = current

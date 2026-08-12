@@ -4,7 +4,7 @@
 
 ## Description
 
-A-Maze-ing is a procedural maze generator and solver written in Python. The program reads a configuration file, generates a random maze using the **Recursive Backtracker**<!--esi pti poxvi--> algorithm, finds the shortest path from entry to exit using **BFS**<!--mec havanakanutyamb es el-->, and displays the result in the terminal with an interactive menu. The maze always contains a hidden **"42"** pattern drawn from fully closed cells.
+A-Maze-ing is a procedural maze generator and solver written in Python. The program reads a configuration file, generates a random maze using the **Randomized Prim's Algorithm** algorithm, finds the shortest path from entry to exit using **BFS**, and displays the result in the terminal with an interactive menu. The maze always contains a hidden **"42"** pattern drawn from fully closed cells.
 
 The generation logic is packaged as a reusable pip-installable module (`mazegen-amazeing`).
 
