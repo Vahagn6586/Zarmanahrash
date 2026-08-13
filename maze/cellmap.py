@@ -1,4 +1,5 @@
 from .cell import Cell
+from typing import Literal
 
 
 class CellMap:
@@ -49,48 +50,33 @@ class CellMap:
 
         return passages
 
-    def remove_wall(self, first: Cell, second: Cell) -> None:
+    def adjust_walls(self, first: Cell, second: Cell,
+                     mode: Literal["remove", "add"] = "remove") -> None:
         dx = second.x_coord - first.x_coord
         dy = second.y_coord - first.y_coord
+        flag = False
+
+        match mode:
+            case "add":
+                flag = True
+            case "remove":
+                flag = False
 
         if dx == 1:
-            first.east_wall = False
-            second.west_wall = False
+            first.east_wall = flag
+            second.west_wall = flag
 
         elif dx == -1:
-            first.west_wall = False
-            second.east_wall = False
+            first.west_wall = flag
+            second.east_wall = flag
 
         elif dy == 1:
-            first.south_wall = False
-            second.north_wall = False
+            first.south_wall = flag
+            second.north_wall = flag
 
         elif dy == -1:
-            first.north_wall = False
-            second.south_wall = False
-
-        else:
-            raise ValueError("Cells are not adjacent.")
-
-    def add_wall(self, first: Cell, second: Cell) -> None:
-        dx = second.x - first.x
-        dy = second.y - first.y
-
-        if dx == 1:
-            first.east_wall = True
-            second.west_wall = True
-
-        elif dx == -1:
-            first.west_wall = True
-            second.east_wall = True
-
-        elif dy == 1:
-            first.south_wall = True
-            second.north_wall = True
-
-        elif dy == -1:
-            first.north_wall = True
-            second.south_wall = True
+            first.north_wall = flag
+            second.south_wall = flag
 
         else:
             raise ValueError("Cells are not adjacent.")

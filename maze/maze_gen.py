@@ -25,7 +25,7 @@ class MazeGenerator:
             (3, -2)
         }
 
-    def __init__(self, cellmap: CellMap, seed: int) -> None:
+    def __init__(self, cellmap: CellMap, seed: int = 42) -> None:
         self.cellmap = cellmap
         self.random = random.Random(seed)
         self.blocked = self.pattern_gen()
