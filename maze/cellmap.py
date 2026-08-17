@@ -80,3 +80,18 @@ class CellMap:
 
         else:
             raise ValueError("Cells are not adjacent.")
+
+    def has_wall_between(self, cell: Cell, neighbor: Cell) -> bool:
+        if neighbor.x_coord == cell.x_coord + 1:
+            return cell.east_wall
+
+        if neighbor.x_coord == cell.x_coord - 1:
+            return cell.west_wall
+
+        if neighbor.y_coord == cell.y_coord + 1:
+            return cell.south_wall
+
+        if neighbor.y_coord == cell.y_coord - 1:
+            return cell.north_wall
+
+        return False

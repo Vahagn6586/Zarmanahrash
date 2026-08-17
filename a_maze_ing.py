@@ -37,7 +37,7 @@ def main() -> None:
         seed=config.seed,
     )
 
-    generator.generate()
+    generator.generate(config.perfect)
 
     write_maze(
         cellmap,
