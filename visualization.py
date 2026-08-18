@@ -1,1 +1,1 @@
-import mlx
+from maze import Cell, CellMap

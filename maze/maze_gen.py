@@ -36,6 +36,7 @@ class MazeGenerator:
         self.prim_gen(start)
         if not is_perfect:
             self.add_loops(self.cellmap)
+        # return self.cellmap
 
     def pattern_gen(self) -> set[tuple[int, int]]:
         offset_x = self.cellmap.width // 2
